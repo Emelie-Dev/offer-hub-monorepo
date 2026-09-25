@@ -27,7 +27,7 @@ function Metadata({ field }: { field: SchemaField }) {
     <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-content-secondary">
       {field.defaultValue !== undefined && (
         <span>
-  default?: ReactNode;
+          Default:{" "}
           <code className="font-mono text-content-primary">
             {String(field.defaultValue)}
           </code>
@@ -38,9 +38,9 @@ function Metadata({ field }: { field: SchemaField }) {
           One of:{" "}
           {field.enum.map((value) => (
             <code key={value} className="mr-1 font-mono text-theme-primary">
-      {(field.default !== undefined || field.defaultValue !== undefined) && (
+              {value}
             </code>
-          Default: <code className="font-mono text-content-primary">{String(field.default ?? field.defaultValue)}</code>
+          ))}
         </span>
       )}
       {field.nullable && <span className="text-theme-warning">Nullable</span>}
@@ -76,7 +76,7 @@ function FieldRows({
         const isOpen = openFields[field.name] ?? false;
 
         return (
-          <tbody key={`${depth}-${field.name}`} className="bg-bg-base">
+          <>
             <tr className="align-top text-sm text-content-primary">
               <td
                 className="w-[22%] px-4 py-4 font-mono font-semibold"
@@ -135,7 +135,7 @@ function FieldRows({
             {hasChildren && isOpen && (
               <FieldRows fields={field.children ?? []} depth={depth + 1} />
             )}
-          </tbody>
+          </>
         );
       })}
     </>
@@ -143,7 +143,7 @@ function FieldRows({
 }
 
 export function ParamTable({
-  fields,
+  fields = [],
   label = "Request parameters",
   className,
 }: ParamTableProps) {
@@ -175,7 +175,9 @@ export function ParamTable({
             </th>
           </tr>
         </thead>
-        <FieldRows fields={fields} />
+        <tbody className="bg-bg-base">
+          <FieldRows fields={fields} />
+        </tbody>
       </table>
     </div>
   );

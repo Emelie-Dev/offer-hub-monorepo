@@ -13,7 +13,7 @@ export type ResponseSchemaProps = {
 };
 
 export function ResponseSchema({
-  fields,
+  fields = [],
   example,
   label = "Response schema",
   className,
